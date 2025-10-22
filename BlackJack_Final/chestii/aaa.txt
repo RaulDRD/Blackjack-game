@@ -1,0 +1,285 @@
+#include <Vcl.Imaging.pngimage.hpp>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Card.h"
+#include "Deck.h"
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+Deck deck; // Declare deck object here
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+		: TForm(Owner)
+{
+		deck.Shuffle(); // Shuffle the deck when the form is created
+}
+
+void __fastcall TForm1::PanelStartClick(TObject *Sender)
+{
+		PanelStand->Visible = true;
+		PanelHit->Visible = true;
+		PanelStart->Visible= false;
+
+        deck.giveCardP();
+		displayCard(deck.PlayerHand().back(), Pcarte1);
+        deck.giveCardD();
+	displayCard(deck.DealerHand().back(), Dcarte1);
+        deck.giveCardP();
+	displayCard(deck.PlayerHand().back(), Pcarte2);
+        deck.giveCardD();
+	displayCard(deck.DealerHand().back(), Dcarte2);
+}
+
+void TForm1::displayCard(Card card, TImage* image)
+{
+	String filePath = card.getSymbol() + "_of_" + card.getSuit() + ".png";
+
+    if (FileExists(filePath)) {
+        try {
+            image->Picture->LoadFromFile(filePath);
+        } catch (Exception &e) {
+            ShowMessage("Error loading image: " + e.Message); //Handle exceptions
+        }
+    } else {
+        ShowMessage("File not found: " + filePath);
+    }
+}
+
+void __fastcall TForm1::PanelHitClick(TObject *Sender)
+{
+        deck.giveCardP();
+    if(deck.PlayerHand().size()==3)
+        displayCard(deck.PlayerHand().back(), Pcarte3);
+	if(deck.PlayerHand().size()==4)
+        displayCard(deck.PlayerHand().back(), Pcarte4);
+    if(deck.PlayerHand().size()==5)
+        displayCard(deck.PlayerHand().back(), Pcarte5);
+	if(deck.PlayerHand().size()>5)
+        ShowMessage("You can't have more than 5 cards");
+}
+
+void __fastcall TForm1::PanelStandClick(TObject *Sender)
+{
+        while(deck.ScoreD()<17){ //Dealer hits until 17 or more
+                deck.giveCardD();
+        if(deck.DealerHand().size()==3)
+        displayCard(deck.DealerHand().back(), Dcarte3);
+        if(deck.DealerHand().size()==4)
+        displayCard(deck.DealerHand().back(), Dcarte4);
+        if(deck.DealerHand().size()==5)
+        displayCard(deck.DealerHand().back(), Dcarte5);
+        }
+
+		String message;
+        if(deck.ScoreP()>21)
+                message = "Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Player Busts! Dealer Wins!";
+        else if(deck.ScoreD()>21)
+                message = "Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Dealer Busts! Player Wins!";
+        else if(deck.ScoreP()>deck.ScoreD())
+                message = "Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Player Wins!";
+        else if(deck.ScoreP()<deck.ScoreD())
+                message = "Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Dealer Wins!";
+        else
+                message = "Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Draw";
+
+    ShowMessage(message);
+}//---------------------------------------------------------------------------
+
+#ifndef Unit1H
+#define Unit1H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <Vcl.ExtCtrls.hpp>
+#include "Deck.h"
+#include "Card.h"
+#include <Vcl.Imaging.jpeg.hpp>
+
+//---------------------------------------------------------------------------
+class TForm1 : public TForm
+{
+__published:	// IDE-managed Components
+	TPanel *PanelHit;
+	TImage *Background;
+	TImage *Dcarte1;
+	TImage *Dcarte2;
+	TImage *Dcarte3;
+	TImage *Dcarte4;
+	TImage *Dcarte5;
+	TImage *Pcarte1;
+	TImage *Pcarte2;
+	TImage *Pcarte3;
+	TImage *Pcarte4;
+	TImage *Pcarte5;
+	TPanel *PanelStand;
+	TPanel *PanelStart;
+	TPanel *PanelReset;
+	void __fastcall PanelHitClick(TObject *Sender);
+	void __fastcall PanelStandClick(TObject *Sender);
+	void __fastcall PanelStartClick(TObject *Sender);
+private:	// User declarations
+	Deck deck;
+public:		// User declarations
+	__fastcall TForm1(TComponent* Owner);
+	void displayCard;
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm1 *Form1;
+//---------------------------------------------------------------------------
+#endif#include "Card.h"
+
+
+
+Card::Card(string suit, string symbol) {
+	this->suit = suit;
+	this->symbol = symbol;
+
+}
+string Card::getSuit()  {
+	return suit;
+}
+
+
+string Card::getSymbol()  {
+	return symbol;
+}#pragma once
+#include <string>
+
+using namespace std;
+
+class Card
+{
+private:
+	string suit;
+	string symbol;
+
+public:
+	string getSuit();
+	string getSymbol();
+
+	Card(string suit, string symbol);
+	
+};#include "Deck.h"
+#include <random>
+#include <algorithm>
+#include <System.SysUtils.hpp> // For IntToStr and other String functions
+#include <System.Math.hpp>
+#include <System.AnsiStrings.hpp>
+
+Deck::Deck() {
+    String suits[] = { "Hearts", "Diamonds", "Spades", "Clubs" };
+    String symbols[] = { "A","2","3","4","5","6","7","8","9","10","J","Q","K" };
+
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 13; j++) {
+            deck.push_back(Card(suits[i], symbols[j]));
+        }
+    }
+}
+
+void Deck::Shuffle() {
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(deck.begin(), deck.end(), g); // Use modern shuffling
+    ct=0;
+}
+
+void Deck::giveCardP() {
+    if(ct < deck.size()){
+        Player.push_back(deck[ct]);
+        ct++;
+    }
+}
+
+void Deck::giveCardD() {
+    if(ct < deck.size()){
+        Dealer.push_back(deck[ct]);
+        ct++;
+    }
+}
+
+const std::vector<Card>& Deck::PlayerHand() const {
+    return Player;
+}
+
+const std::vector<Card>& Deck::DealerHand() const {
+    return Dealer;
+}
+
+int Deck::ScoreP() const {
+    int scoreP = 0;
+    for (const auto& card : Player) {
+		String symbol = card.getSymbol();
+        if (symbol == "J" || symbol == "Q" || symbol == "K" || symbol == "10") {
+            scoreP += 10;
+        } else if (symbol == "A") {
+            scoreP += (scoreP + 11 > 21) ? 1 : 11;
+        } else {
+            scoreP += StrToInt(symbol); // Use StrToInt
+        }
+    }
+    return scoreP;
+}
+
+int Deck::ScoreD() const {
+    int scoreD = 0;
+    for (const auto& card : Dealer) {
+		String symbol = card.getSymbol();
+        if (symbol == "J" || symbol == "Q" || symbol == "K" || symbol == "10") {
+            scoreD += 10;
+        } else if (symbol == "A") {
+            scoreD += (scoreD + 11 > 21) ? 1 : 11;
+        } else {
+            scoreD += StrToInt(symbol); // Use StrToInt
+        }
+    }
+    return scoreD;
+}
+
+void Deck::resetDeck() {
+    deck.clear();
+    Player.clear();
+    Dealer.clear();
+    ct = 0;
+
+    String suits[] = { "Hearts", "Diamonds", "Spades", "Clubs" };
+    String symbols[] = { "A","2","3","4","5","6","7","8","9","10","J","Q","K" };
+
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 13; j++) {
+			deck.push_back(Card(suits[i], symbols[j]));
+        }
+    }
+    Shuffle();
+}#ifndef DeckH
+#define DeckH
+
+#include <vector>
+#include "Card.h"
+
+class Deck {
+private:
+    std::vector<Card> deck;
+    std::vector<Card> Player;
+    std::vector<Card> Dealer;
+    int ct = 0;
+
+public:
+    Deck();
+    void Shuffle();
+    void giveCardP();
+    void giveCardD();
+    const std::vector<Card>& PlayerHand() const; // Return const reference
+    const std::vector<Card>& DealerHand() const; // Return const reference
+    int ScoreP() const; // const correctness
+    int ScoreD() const; // const correctness
+    void resetDeck();
+};
+
+#endif

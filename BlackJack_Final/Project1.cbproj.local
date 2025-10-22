@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2025/01/13 02:51:04.000.578,C:\Users\Raul\OneDrive\Desktop\New folder\Decka.cpp=</Transaction>
+    <Transaction>2025/01/13 02:51:16.000.627,=C:\Users\Raul\OneDrive\Desktop\New folder\Unit2.cpp</Transaction>
+    <Transaction>2025/01/13 02:51:34.000.573,C:\Users\Raul\OneDrive\Desktop\New folder\Unit2.h=C:\Users\Raul\OneDrive\Desktop\New folder\Deck.h</Transaction>
+    <Transaction>2025/01/13 02:51:34.000.573,C:\Users\Raul\OneDrive\Desktop\New folder\Unit2.cpp=C:\Users\Raul\OneDrive\Desktop\New folder\Deck.cpp</Transaction>
+    <Transaction>2025/01/13 02:59:50.000.230,C:\Users\Raul\OneDrive\Desktop\New folder\Unit1.cpp=C:\Users\Raul\OneDrive\Desktop\New folder\BlackjackFinal.cpp</Transaction>
+    <Transaction>2025/01/13 02:59:50.000.230,C:\Users\Raul\OneDrive\Desktop\New folder\Unit1.dfm=C:\Users\Raul\OneDrive\Desktop\New folder\BlackjackFinal.dfm</Transaction>
+    <Transaction>2025/01/13 02:59:50.000.230,C:\Users\Raul\OneDrive\Desktop\New folder\Unit1.h=C:\Users\Raul\OneDrive\Desktop\New folder\BlackjackFinal.h</Transaction>
+    <Transaction>2025/01/13 18:43:23.000.841,=C:\Users\Raul\OneDrive\Desktop\Deck.cpp</Transaction>
+    <Transaction>2025/01/13 18:43:23.000.937,=C:\Users\Raul\OneDrive\Desktop\Deck.h</Transaction>
+    <Transaction>2025/01/13 18:43:23.000.734,=C:\Users\Raul\OneDrive\Desktop\Card.h</Transaction>
+    <Transaction>2025/01/13 18:43:24.000.027,=C:\Users\Raul\OneDrive\Desktop\Card.cpp</Transaction>
+    <Transaction>2025/01/13 18:45:58.000.790,=C:\Users\Raul\OneDrive\Desktop\New folder\Deck.cpp</Transaction>
+    <Transaction>2025/01/13 18:45:58.000.879,=C:\Users\Raul\OneDrive\Desktop\New folder\Deck.h</Transaction>
+    <Transaction>2025/01/13 18:45:58.000.974,=C:\Users\Raul\OneDrive\Desktop\New folder\Card.cpp</Transaction>
+    <Transaction>2025/01/13 18:45:59.000.069,=C:\Users\Raul\OneDrive\Desktop\New folder\Card.h</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="BlackjackFinal.cpp"/>
+    <File Path="BlackjackFinal.cpp"/>
+    <File Path="BlackjackFinal.dfm"/>
+    <File Path="BlackjackFinal.h"/>
+    <File Path="Card.cpp"/>
+    <File Path="Card.h"/>
+    <File Path="Deck.cpp"/>
+    <File Path="Deck.h"/>
+    <File Path="Project1.cpp"/>
+    <File Path="Project1PCH1.h"/>
+  </ProjectSortOrder>
+</BorlandProject>

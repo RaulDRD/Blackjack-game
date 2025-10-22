@@ -1,0 +1,50 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 441
+  ClientWidth = 624
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  TextHeight = 15
+  object PanelHit: TPanel
+    Left = 64
+    Top = 104
+    Width = 185
+    Height = 41
+    Caption = 'Hit'
+    TabOrder = 0
+    OnClick = PanelHitClick
+  end
+  object PanelStand: TPanel
+    Left = 424
+    Top = 104
+    Width = 185
+    Height = 41
+    Caption = 'Stand'
+    TabOrder = 1
+    OnClick = PanelStandClick
+  end
+  object PanelStart: TPanel
+    Left = 408
+    Top = 224
+    Width = 185
+    Height = 41
+    Caption = 'START'
+    TabOrder = 2
+    OnClick = PanelStartClick
+  end
+  object PanelReset: TPanel
+    Left = 64
+    Top = 240
+    Width = 185
+    Height = 41
+    Caption = 'Reset'
+    TabOrder = 3
+    OnClick = PanelResetClick
+  end
+end

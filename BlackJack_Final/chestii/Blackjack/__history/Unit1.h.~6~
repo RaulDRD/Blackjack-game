@@ -1,0 +1,41 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit1H
+#define Unit1H
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <Vcl.ExtCtrls.hpp>
+#include "Deck.h"
+#include "Card.h"
+#include <Vcl.Imaging.jpeg.hpp>
+
+//---------------------------------------------------------------------------
+class TForm1 : public TForm
+{
+__published:	// IDE-managed Components
+	TPanel *PanelHit;
+	TImage *Background;
+	TImage *Dcarte1;
+	TImage *Dcarte2;
+	TImage *Dcarte3;
+	TImage *Dcarte4;
+	TImage *Dcarte5;
+	TImage *Pcarte1;
+	TImage *Pcarte2;
+	TImage *Pcarte3;
+	TImage *Pcarte4;
+	TImage *Pcarte5;
+	TButton *Button1;
+	void __fastcall PanelHitClick(TObject *Sender);
+private:	// User declarations
+	Deck deck;
+public:		// User declarations
+	__fastcall TForm1(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm1 *Form1;
+//---------------------------------------------------------------------------
+#endif

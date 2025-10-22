@@ -1,0 +1,39 @@
+#pragma once
+#include <string>
+#include <string.h>
+#include <vector>
+#include <iostream>
+#include "Card.h"
+using namespace std;
+
+class Deck {
+private:
+	vector<Card>deck;
+	vector<Card>Player;
+	vector<Card>Dealer;
+	int ct = 0;
+	int nrP=0;
+	int nrD=0;
+	int nrcartiP;
+	int nrcartiD;
+	int nrAsiP=0;
+	int nrAsiD=0;
+	int dif=0;
+
+public:
+
+	Deck();
+
+	void Shuffle();
+	void  giveCardP();
+	void giveCardD();
+	vector <Card> giveHandP();
+	vector <Card> giveHandD();
+	int NrCartiP();
+	int NrCartiD();
+	int ScoreP();
+	int ScoreD();
+	int ScoreD2();
+	void Generare();
+	int Diferenta();
+};

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2025/01/13 02:21:15.680,=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2025/01/13 02:21:15.740,=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>2025/01/13 02:24:54.310,=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.cpp</Transaction>
+    <Transaction>2025/01/13 02:25:50.245,C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Deck.h=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.h</Transaction>
+    <Transaction>2025/01/13 02:25:50.245,C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Deck.cpp=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.cpp</Transaction>
+    <Transaction>2025/01/13 02:26:35.484,=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.cpp</Transaction>
+    <Transaction>2025/01/13 02:26:48.120,C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Card.cpp=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.cpp</Transaction>
+    <Transaction>2025/01/13 02:26:48.120,C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Card.h=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.h</Transaction>
+    <Transaction>2025/01/13 02:27:33.611,C:\Users\Raul\OneDrive\Desktop\Project1PCH1.h=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
+    <Transaction>2025/01/13 02:27:33.624,C:\Users\Raul\OneDrive\Desktop\Unit1.cpp=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>2025/01/13 02:27:33.624,C:\Users\Raul\OneDrive\Desktop\Unit1.h=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.h</Transaction>
+    <Transaction>2025/01/13 02:27:33.624,C:\Users\Raul\OneDrive\Desktop\Unit1.dfm=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2025/01/13 02:27:33.632,C:\Users\Raul\OneDrive\Desktop\Deck.cpp=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Deck.cpp</Transaction>
+    <Transaction>2025/01/13 02:27:33.632,C:\Users\Raul\OneDrive\Desktop\Deck.h=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Deck.h</Transaction>
+    <Transaction>2025/01/13 02:27:33.647,C:\Users\Raul\OneDrive\Desktop\Card.h=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Card.h</Transaction>
+    <Transaction>2025/01/13 02:27:33.647,C:\Users\Raul\OneDrive\Desktop\Card.cpp=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Card.cpp</Transaction>
+    <Transaction>2025/01/13 02:27:33.657,C:\Users\Raul\OneDrive\Desktop\Project1.cbproj=C:\Users\Raul\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.cbproj</Transaction>
+    <Transaction>2025/01/13 02:28:20.960,C:\Users\Raul\OneDrive\Desktop\Decka.cpp=C:\Users\Raul\OneDrive\Desktop\Deck.cpp</Transaction>
+    <Transaction>2025/01/13 02:28:20.960,C:\Users\Raul\OneDrive\Desktop\Decka.h=C:\Users\Raul\OneDrive\Desktop\Deck.h</Transaction>
+  </Transactions>
+  <ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="Project1.cpp"/>
+    <File Path="Project1PCH1.h"/>
+    <File Path="Unit1.cpp"/>
+    <File Path="Unit1.cpp"/>
+    <File Path="Unit1.dfm"/>
+    <File Path="Unit1.h"/>
+    <File Path="Decka.cpp"/>
+    <File Path="Decka.cpp"/>
+    <File Path="Decka.h"/>
+    <File Path="Card.cpp"/>
+    <File Path="Card.cpp"/>
+    <File Path="Card.h"/>
+  </ProjectSortOrder>
+</BorlandProject>

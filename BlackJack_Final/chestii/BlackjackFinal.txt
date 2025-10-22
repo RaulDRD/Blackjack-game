@@ -1,0 +1,475 @@
+#include <Vcl.Imaging.pngimage.hpp>
+#pragma hdrstop
+
+#include "BlackjackFinal.h"
+#include "Card.h"
+#include "Deck.h"
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+Deck deck;
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+	PanelHit->Font->Style = TFontStyles() << fsBold;
+	PanelHit->Font->Color = clWhite;
+	PanelStand->Font->Style = TFontStyles() << fsBold;
+	PanelStand->Font->Color = clWhite;
+	PanelStart->Font->Style = TFontStyles() << fsBold;
+	PanelStart->Font->Color = clWhite;
+	PanelReset->Font->Style = TFontStyles() << fsBold;// Set to bold
+	PanelReset->Font->Color = clWhite;
+	PlayerScore->Font->Style = TFontStyles() << fsBold;// Set to bold
+	PlayerScore->Font->Color = clBlack;
+	DealerScore->Font->Style = TFontStyles() << fsBold;// Set to bold
+	DealerScore->Font->Color = clBlack;
+}
+
+String _fastcall TForm1::filePath(Card card)
+{
+//	string symbol=card.getSymbol();
+//	string suit=card.getSuit();
+	return  System::String(card.getSymbol().c_str()) + "_of_" + System::String(card.getSuit().c_str()) + ".png";
+}
+
+void __fastcall TForm1::PanelStartClick(TObject *Sender)
+{
+	deck.Shuffle();
+//	String suita=getSuit();
+
+	PanelStand->Visible = true;
+	PanelHit->Visible = true;
+	PlayerScore->Visible=true;
+	PanelStart->Visible=false;
+	Logo->Visible=false;
+
+	deck.giveCardP();
+	PlayerScore->Caption = "Player's Score: " + IntToStr(deck.ScoreP());
+	deck.giveCardD();
+	DealerScore->Visible=true;
+
+
+	deck.giveCardP();
+	PlayerScore->Caption = "Player's Score: " + IntToStr(deck.ScoreP());
+	deck.giveCardD();
+	DealerScore->Caption = "Dealer's Score: " + IntToStr(deck.ScoreD2());
+	Pcarte1->Visible=true;
+	Pcarte2->Visible=true;
+
+	Dcarte1->Visible=true;
+	Dcarte2->Visible=true;
+
+	DcarteSpate->Visible=true;
+	Pcarte1->Picture->LoadFromFile(filePath(deck.giveHandP()[0]));
+	Dcarte1->Picture->LoadFromFile(filePath(deck.giveHandD()[0]));
+	DcarteSpate->Picture->LoadFromFile("card.png");
+	Pcarte2->Picture->LoadFromFile(filePath(deck.giveHandP()[1]));
+	Dcarte2->Picture->LoadFromFile(filePath(deck.giveHandD()[1]));
+
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::PanelHitClick(TObject *Sender)
+{
+
+	 deck.giveCardP();
+
+	 if(deck.NrCartiP()==3)
+	 {
+	   Pcarte3->Picture->LoadFromFile(filePath(deck.giveHandP()[2]));
+		Pcarte3->Visible=true;
+	 }
+	 if(deck.NrCartiP()==4)
+	 {
+	   Pcarte4->Picture->LoadFromFile(filePath(deck.giveHandP()[3]));
+	   Pcarte4->Visible=true;
+	 }
+	 if(deck.NrCartiP()==5)
+	 {
+	   Pcarte5->Picture->LoadFromFile(filePath(deck.giveHandP()[4]));
+		Pcarte5->Visible=true;
+	 }
+
+	 PlayerScore->Caption = "Player's Score: " + IntToStr(deck.ScoreP());
+
+	 if(deck.ScoreP()>21)
+	{
+        DcarteSpate->Visible = false;
+		Dcarte1->Visible=true;
+        DealerScore->Visible=true;
+		DealerScore->Caption = "Dealer's Score: " + IntToStr(deck.ScoreD());
+		ShowMessage("Busted! - Dealer Wins!");
+		PanelStand->Visible = false;
+		PanelHit->Visible = false;
+
+	}
+
+   }
+
+void __fastcall TForm1::PanelStandClick(TObject *Sender)
+{
+	PanelStand->Visible = false;
+	PanelHit->Visible = false;
+	DcarteSpate->Visible = false;
+	Dcarte1->Visible=true;
+	Dcarte2->Visible=true;
+
+
+
+
+	while(deck.ScoreD()<16){
+	  deck.giveCardD();
+	  if(deck.NrCartiD()==3)
+	 {
+		Dcarte3->Visible=true;
+	   Dcarte3->Picture->LoadFromFile(filePath(deck.giveHandD()[2]));
+	 }
+	 if(deck.NrCartiD()==4)
+	 {
+		Dcarte4->Visible=true;
+	   Dcarte4->Picture->LoadFromFile(filePath(deck.giveHandD()[3]));
+	 }
+	 if(deck.NrCartiD()==5)
+	 {
+		 Dcarte5->Visible=true;
+	   Dcarte5->Picture->LoadFromFile(filePath(deck.giveHandD()[4]));
+	 }
+	}
+	DealerScore->Visible=true;
+	DealerScore->Caption = "Dealer's Score: " + IntToStr(deck.ScoreD());
+	if(deck.ScoreD()<=21)
+	{
+		 if(deck.ScoreP()>deck.ScoreD())
+		{
+			ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Player Wins!");
+		}
+		if(deck.ScoreP()<deck.ScoreD())
+		{
+			ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Dealer Wins!");
+		}
+		if(deck.ScoreP()==deck.ScoreD())
+		{
+			ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Draw");
+		}
+	}
+	else
+	{
+		ShowMessage("Dealer Busted! - Player Wins!");
+	}
+
+
+
+
+}
+
+void __fastcall TForm1::PanelResetClick(TObject *Sender)
+{
+		  PanelStart->Visible = true;
+		  Logo->Visible=true;
+		  PanelStand->Visible = false;
+		 PanelHit->Visible = false;
+		 PlayerScore->Visible=false;
+		 DealerScore->Visible = false;
+		 Pcarte1->Visible=false;
+		 Pcarte2->Visible=false;
+		 Pcarte3->Visible=false;
+		 Pcarte4->Visible=false;
+		 Pcarte5->Visible=false;
+		 Dcarte1->Visible=false;
+		 Dcarte2->Visible=false;
+		 Dcarte3->Visible=false;
+		 Dcarte4->Visible=false;
+		 Dcarte5->Visible=false;
+		 DcarteSpate->Visible=false;
+		 deck.Generare();
+		 deck.Shuffle();
+}
+//---------------------------------------------------------------------------
+#include "Deck.h"
+#include "Card.h"
+#include <vector>
+#include<iostream>
+#include<random>
+#include<algorithm>
+
+using namespace std;
+
+
+Deck::Deck() {
+	vector<string>suit = { "Hearts", "Diamonds", "Spades", "Clubs" };
+	vector<string>symbol = { "A","2","3","4","5","6","7","8","9","10","J","Q","K" };
+
+	for (int i = 0;i < suit.size();i++)
+	{
+		for (int j = 0;j < symbol.size();j++)
+		{
+			deck.push_back(Card(suit[i], symbol[j]));
+		}
+	}
+}
+
+void Deck::Generare(){
+	vector<string>suit = { "Hearts", "Diamonds", "Spades", "Clubs" };
+	vector<string>symbol = { "A","2","3","4","5","6","7","8","9","10","J","Q","K" };
+
+	for (int i = 0;i < suit.size();i++)
+	{
+		for (int j = 0;j < symbol.size();j++)
+		{
+			deck.push_back(Card(suit[i], symbol[j]));
+		}
+	}
+}
+
+
+void Deck::Shuffle()
+{
+	Player.clear();
+	Dealer.clear();
+	nrP=0;
+	nrD=0;
+	srand(time(NULL));
+	for (int i = 0; i < deck.size(); ++i) {
+
+		int j = rand() % deck.size();
+		swap(deck[i], deck[j]);
+
+	}
+	deck.clear();
+	nrAsiP=0;
+	nrAsiD=0;
+
+
+
+
+
+
+};
+
+/*void Deck::Afiseaza() {
+	for (int i = 0;i < deck.size();i++)
+	{
+		cout << deck[i].getSuit() << " of " << deck[i].getSymbol() <<i<<endl;
+	}
+
+}*/
+
+void Deck::giveCardP() {
+
+	Player.push_back(deck[ct]);
+	deck.pop_back();
+	ct++;
+	nrP++;
+}
+
+vector <Card> Deck::giveHandP() {
+
+	return Player;
+}
+
+void Deck::giveCardD() {
+
+	Dealer.push_back(deck[ct]);
+	deck.pop_back();
+
+	ct++;
+	nrD++;
+}
+
+vector <Card> Deck::giveHandD() {
+
+	return Dealer;
+}
+
+int Deck::NrCartiP(){
+
+	nrcartiP=nrP;
+	return nrcartiP;
+}
+
+int Deck::NrCartiD(){
+
+	nrcartiD=nrD;
+	return nrcartiD;
+}
+
+int Deck::ScoreP() {
+	int scoreP = 0;
+	for (int i = 0;i < Player.size();i++)
+	{
+
+		if (Player[i].getSymbol() == "J" || Player[i].getSymbol() == "Q" || Player[i].getSymbol() == "K" || Player[i].getSymbol() == "10")
+		{
+			scoreP = scoreP + 10;
+		}
+		else if (Player[i].getSymbol() == "A") {
+				scoreP = scoreP + 11;
+				nrAsiP++;
+//			if (scoreP + 11 > 21)
+//			{
+//				scoreP = scoreP + 1;
+//			}
+//			else
+//			{
+//				scoreP = scoreP + 11;
+//			}
+		}
+		else {
+			scoreP = scoreP + stoi(Player[i].getSymbol());
+		}
+		if(i==1 && scoreP==16 && nrAsiP!=0)
+		{
+			scoreP=scoreP-10;
+				nrAsiP--;
+        }
+		while(scoreP>21 && nrAsiP>0)
+		{
+			nrAsiP--;
+			scoreP = scoreP-10;
+		}
+	}
+	return scoreP;
+}
+
+int Deck::ScoreD() {
+	int scoreD = 0;
+	for (int i = 0;i < Dealer.size();i++)
+	{
+
+		if (Dealer[i].getSymbol() == "J" || Dealer[i].getSymbol() == "Q" || Dealer[i].getSymbol() == "K" || Dealer[i].getSymbol() == "10")
+		{
+			scoreD = scoreD + 10;
+		}
+		else if (Dealer[i].getSymbol() == "A") {
+			scoreD = scoreD + 11;
+				nrAsiD++;
+//			if (scoreD + 11 > 21)
+//			{
+//				scoreD = scoreD + 1;
+//			}
+//			else
+//			{
+//				scoreD = scoreD + 11;
+//			}
+		}
+		else {
+			scoreD = scoreD + stoi(Dealer[i].getSymbol());
+		}
+		while(scoreD>21 && nrAsiD>0)
+		{
+			nrAsiD--;
+			scoreD = scoreD-10;
+		}
+	}
+	return scoreD;
+
+	}
+
+	int Deck::Test()
+	{
+		return 3;
+	}
+
+	int Deck::ScoreD2(){
+	   int scoreD2 = 0;
+
+
+		if (Dealer[1].getSymbol() == "J" || Dealer[1].getSymbol() == "Q" || Dealer[1].getSymbol() == "K" || Dealer[1].getSymbol() == "10")
+		{
+			scoreD2 = scoreD2 + 10;
+		}
+		else if (Dealer[1].getSymbol() == "A") {
+			scoreD2 = scoreD2 + 11;
+				nrAsiD++;
+//			if (scoreD + 11 > 21)
+//			{
+//				scoreD = scoreD + 1;
+//			}
+//			else
+//			{
+//				scoreD = scoreD + 11;
+//			}
+		}
+		else {
+			scoreD2 = scoreD2 + stoi(Dealer[1].getSymbol());
+		}
+		return scoreD2;
+
+	}#pragma once
+#include <string>
+#include <string.h>
+#include <vector>
+#include <iostream>
+#include "Card.h"
+using namespace std;
+
+class Deck {
+private:
+	vector<Card>deck;
+	vector<Card>Player;
+	vector<Card>Dealer;
+	int ct = 0;
+	int nrP=0;
+	int nrD=0;
+	int nrcartiP;
+	int nrcartiD;
+	int nrAsiP=0;
+	int nrAsiD=0;
+
+public:
+
+	Deck();
+
+	void Shuffle();
+
+	/*void Afiseaza();*/
+
+	void  giveCardP();
+	void giveCardD();
+	vector <Card> giveHandP();
+	vector <Card> giveHandD();
+	int NrCartiP();
+	int NrCartiD();
+	int ScoreP();
+	int ScoreD();
+	int Test();
+	int ScoreD2();
+    void Generare();
+};#pragma once
+#include <string>
+
+using namespace std;
+
+class Card
+{
+private:
+	string suit;
+	string symbol;
+
+public:
+	string getSuit();
+	string getSymbol();
+
+	Card(string suit, string symbol);
+
+};#include "Card.h"
+
+
+
+Card::Card(string suit, string symbol) {
+	this->suit = suit;
+	this->symbol = symbol;
+
+}
+string Card::getSuit()  {
+	return suit;
+}
+
+
+string Card::getSymbol()  {
+	return symbol;
+}

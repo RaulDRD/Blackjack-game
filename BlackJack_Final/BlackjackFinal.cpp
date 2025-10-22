@@ -1,0 +1,207 @@
+#include <Vcl.Imaging.pngimage.hpp>
+#pragma hdrstop
+
+#include "BlackjackFinal.h"
+#include "Card.h"
+#include "Deck.h"
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+Deck deck;
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+	PanelHit->Font->Style = TFontStyles() << fsBold;
+	PanelHit->Font->Color = clWhite;
+	PanelStand->Font->Style = TFontStyles() << fsBold;
+	PanelStand->Font->Color = clWhite;
+	PanelStart->Font->Style = TFontStyles() << fsBold;
+	PanelStart->Font->Color = clWhite;
+	PanelReset->Font->Style = TFontStyles() << fsBold;
+	PanelReset->Font->Color = clWhite;
+	PlayerScore->Font->Style = TFontStyles() << fsBold;
+	PlayerScore->Font->Color = clBlack;
+	DealerScore->Font->Style = TFontStyles() << fsBold;
+	DealerScore->Font->Color = clBlack;
+}
+
+String _fastcall TForm1::filePath(Card card)
+{
+
+	return  System::String(card.getSymbol().c_str()) + "_of_" + System::String(card.getSuit().c_str()) + ".png";
+}
+
+void __fastcall TForm1::PanelStartClick(TObject *Sender)
+{
+	deck.Shuffle();
+
+
+	PanelStand->Visible = true;
+	PanelHit->Visible = true;
+	PlayerScore->Visible=true;
+	PanelStart->Visible=false;
+	Logo->Visible=false;
+
+	deck.giveCardP();
+	PlayerScore->Caption = "Player's Score: " + IntToStr(deck.ScoreP());
+	deck.giveCardD();
+	DealerScore->Visible=true;
+
+
+	deck.giveCardP();
+	PlayerScore->Caption = "Player's Score: " + IntToStr(deck.ScoreP());
+	deck.giveCardD();
+	DealerScore->Caption = "Dealer's Score: " + IntToStr(deck.ScoreD2());
+	Pcarte1->Visible=true;
+	Pcarte2->Visible=true;
+
+	Dcarte1->Visible=true;
+	Dcarte2->Visible=true;
+
+	DcarteSpate->Visible=true;
+	Pcarte1->Picture->LoadFromFile(filePath(deck.giveHandP()[0]));
+	Dcarte1->Picture->LoadFromFile(filePath(deck.giveHandD()[0]));
+	DcarteSpate->Picture->LoadFromFile("card.png");
+	Pcarte2->Picture->LoadFromFile(filePath(deck.giveHandP()[1]));
+	Dcarte2->Picture->LoadFromFile(filePath(deck.giveHandD()[1]));
+
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::PanelHitClick(TObject *Sender)
+{
+
+	 deck.giveCardP();
+
+	 if(deck.NrCartiP()==3)
+	 {
+	   Pcarte3->Picture->LoadFromFile(filePath(deck.giveHandP()[2]));
+		Pcarte3->Visible=true;
+	 }
+	 if(deck.NrCartiP()==4)
+	 {
+	   Pcarte4->Picture->LoadFromFile(filePath(deck.giveHandP()[3]));
+	   Pcarte4->Visible=true;
+	 }
+	 if(deck.NrCartiP()==5)
+	 {
+	   Pcarte5->Picture->LoadFromFile(filePath(deck.giveHandP()[4]));
+	   Pcarte5->Visible=true;
+	 }
+
+	 PlayerScore->Caption = "Player's Score: " + IntToStr(deck.ScoreP());
+
+	 if(deck.ScoreP()>21)
+	{
+		DcarteSpate->Visible = false;
+		Dcarte1->Visible=true;
+		DealerScore->Visible=true;
+		DealerScore->Caption = "Dealer's Score: " + IntToStr(deck.ScoreD());
+		ShowMessage("Busted! - Dealer Wins!");
+		PanelStand->Visible = false;
+		PanelHit->Visible = false;
+
+	}
+
+
+   }
+
+void __fastcall TForm1::PanelStandClick(TObject *Sender)
+{
+	PanelStand->Visible = false;
+	PanelHit->Visible = false;
+	DcarteSpate->Visible = false;
+	Dcarte1->Visible=true;
+	Dcarte2->Visible=true;
+//	  if(deck.ScoreD()<deck.ScoreP()){
+//
+//	   Dcarte3->Visible=true;
+//	   if(deck.Diferenta()<10)
+//	   {
+//		  Dcarte3->Picture->LoadFromFile(IntToStr(deck.Diferenta())+ "_of_clubs.png");
+//	   }
+//	   else if(deck.Diferenta()==10)
+//	   {
+//		  Dcarte3->Picture->LoadFromFile( "K_of_clubs.png");
+//	   }
+//	   else if(deck.Diferenta()==11)
+//	   {
+//			 Dcarte3->Picture->LoadFromFile("A_of_clubs.png");
+//	   }
+//		 }
+
+
+
+	while(deck.ScoreD()<16){
+	  deck.giveCardD();
+	  if(deck.NrCartiD()==3)
+	 {
+		Dcarte3->Visible=true;
+	   Dcarte3->Picture->LoadFromFile(filePath(deck.giveHandD()[2]));
+	 }
+	 if(deck.NrCartiD()==4)
+	 {
+		Dcarte4->Visible=true;
+	   Dcarte4->Picture->LoadFromFile(filePath(deck.giveHandD()[3]));
+	 }
+	 if(deck.NrCartiD()==5)
+	 {
+		 Dcarte5->Visible=true;
+	   Dcarte5->Picture->LoadFromFile(filePath(deck.giveHandD()[4]));
+	 }
+	}
+	DealerScore->Visible=true;
+	DealerScore->Caption = "Dealer's Score: " + IntToStr(deck.ScoreD());
+	if(deck.ScoreD()<=21)
+	{
+		 if(deck.ScoreP()>deck.ScoreD())
+		{
+			ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Player Wins!");
+		}
+		if(deck.ScoreP()<deck.ScoreD())
+		{
+			ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Dealer Wins!");
+		}
+		if(deck.ScoreP()==deck.ScoreD())
+		{
+			ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Draw");
+		}
+	}
+	else
+	{
+		ShowMessage("Dealer Busted! - Player Wins!");
+	}
+
+
+
+
+}
+
+void __fastcall TForm1::PanelResetClick(TObject *Sender)
+{
+		  PanelStart->Visible = true;
+		  Logo->Visible=true;
+		  PanelStand->Visible = false;
+		 PanelHit->Visible = false;
+		 PlayerScore->Visible=false;
+		 DealerScore->Visible = false;
+		 Pcarte1->Visible=false;
+		 Pcarte2->Visible=false;
+		 Pcarte3->Visible=false;
+		 Pcarte4->Visible=false;
+		 Pcarte5->Visible=false;
+		 Dcarte1->Visible=false;
+		 Dcarte2->Visible=false;
+		 Dcarte3->Visible=false;
+		 Dcarte4->Visible=false;
+		 Dcarte5->Visible=false;
+		 DcarteSpate->Visible=false;
+		 deck.Generare();
+
+}
+//---------------------------------------------------------------------------
+

@@ -1,0 +1,75 @@
+#include <Vcl.Imaging.pngimage.hpp>
+#pragma hdrstop
+
+#include "BlackjackFinal.h"
+#include "Card.h"
+#include "Deck.h"
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+Deck deck;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+
+String _fastcall TForm1::filePath(Card card)
+{
+//	string symbol=card.getSymbol();
+//	string suit=card.getSuit();
+	return  System::String(card.getSymbol().c_str()) + "_of_" + System::String(card.getSuit().c_str()) + ".png";
+}
+
+void __fastcall TForm1::PanelStartClick(TObject *Sender)
+{
+	deck.Shuffle();
+//	String suita=getSuit();
+	PanelStand->Visible = true;
+	PanelHit->Visible = true;
+	PanelStart->Visible=false;
+	deck.giveCardP();
+	deck.giveCardD();
+	deck.giveCardP();
+	deck.giveCardD();
+	 int i=2;
+	Pcarte1->Picture->LoadFromFile(filePath(deck.giveHandP()[0]));
+//	Dcarte1->Picture->LoadFromFile(filePath);
+//	Pcarte2->Picture->LoadFromFile(filePath);
+//	Dcarte2->Picture->LoadFromFile(filePath);
+    deck.Test();
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::PanelHitClick(TObject *Sender)
+{
+	 deck.giveCardP(); // Assuming deck is an instance of your Deck class
+
+
+   }
+
+void __fastcall TForm1::PanelStandClick(TObject *Sender)
+{
+
+	while(deck.ScoreD()<16){
+	 deck.giveCardD();
+	}
+
+	if(deck.ScoreP()>deck.ScoreD())
+	{
+		ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Player Wins!");
+	}
+	if(deck.ScoreP()<deck.ScoreD())
+	{
+		ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Dealer Wins!");
+	}
+	if(deck.ScoreP()==deck.ScoreD())
+	{
+		ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Draw");
+	}
+
+
+
+}

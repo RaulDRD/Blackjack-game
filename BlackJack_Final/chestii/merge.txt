@@ -1,0 +1,249 @@
+#include <Vcl.Imaging.pngimage.hpp>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Card.h"
+#include "Deck.h"
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+
+void __fastcall TForm1::PanelStartClick(TObject *Sender)
+{
+
+	PanelStand->Visible = true;
+	PanelHit->Visible = true;
+	PanelStart->Visible= false;
+	deck.giveCardP();
+	deck.giveCardD();
+	deck.giveCardP();
+	deck.giveCardD();
+	String filePath;
+
+
+//	filePath = "2_of_clubs.png";  // The file path should be dynamic
+//	Pcarte1->Picture->LoadFromFile(filePath);  // This is fine for static paths
+//	Dcarte1->Picture->LoadFromFile(filePath);
+//	Pcarte2->Picture->LoadFromFile(filePath);  // This is fine for static paths
+//	Dcarte2->Picture->LoadFromFile(filePath);
+
+
+   }
+
+   void __fastcall TForm1::PanelHitClick(TObject *Sender)
+   {
+	 deck.giveCardP();
+   }
+
+void __fastcall TForm1::PanelStandClick(TObject *Sender)
+{
+
+	while(deck.ScoreD()<16){
+	 deck.giveCardD();
+	}
+
+	if(deck.ScoreP()>deck.ScoreD())
+	{
+		ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Player Wins!");
+	}
+	if(deck.ScoreP()<deck.ScoreD())
+	{
+		ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Dealer Wins!");
+	}
+	if(deck.ScoreP()==deck.ScoreD())
+	{
+		ShowMessage("Player's Score: "+ IntToStr(deck.ScoreP())+ " - Dealer's Score: " +IntToStr(deck.ScoreD())+ " -> Draw");
+	}
+
+
+
+}
+//---------------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+
+#include "Deck.h"
+#include "Card.h"
+#include <vector>
+#include<iostream>
+#include<random>
+#include<algorithm>
+
+using namespace std;
+
+
+Deck::Deck() {
+	vector<string>suit = { "Hearts", "Diamonds", "Spades", "Clubs" };
+	vector<string>symbol = { "A","2","3","4","5","6","7","8","9","10","J","Q","K" };
+
+	for (int i = 0;i < suit.size();i++)
+	{
+		for (int j = 0;j < symbol.size();j++)
+		{
+			deck.push_back(Card(suit[i], symbol[j]));
+		}
+	}
+}
+
+	void Deck::Shuffle()
+	{
+		srand(time(NULL));
+		for (int i = 0; i < deck.size(); ++i) {
+
+			 int j = rand() % deck.size();
+			swap(deck[i], deck[j]);
+
+		}
+
+	};
+
+	/*void Deck::Afiseaza() {
+		for (int i = 0;i < deck.size();i++)
+		{
+			cout << deck[i].getSuit() << " of " << deck[i].getSymbol() <<i<<endl;
+		}
+
+	}*/
+
+	void Deck::giveCardP() {
+
+		Player.push_back(deck[ct]);
+		deck.pop_back();
+		ct++;
+	}
+
+	vector<Card>Deck::PlayerHand(){
+		return Player;
+	}
+
+	vector<Card>Deck::DealerHand(){
+		return Dealer;
+	}
+
+//	void Deck::showHandP() {
+//		cout << "Player's Hand:" << endl;
+//		for (int i = 0;i < Player.size();i++)
+//		{
+//			cout << Player[i].getSuit() << " of " << Player[i].getSymbol() << endl;
+//		}
+//		cout << endl;
+//	}
+
+	void Deck::giveCardD() {
+
+		Dealer.push_back(deck[ct]);
+		deck.pop_back();
+
+		ct++;
+	}
+
+//	String Deck::showHandD() {
+//	String filePath;
+//
+//		for (int i = 0;i < Dealer.size();i++)
+//		{
+//			 filePath =Dealer[i].getSymbol() + "_of_" + Dealer[i].getSuit()+".png";
+//		}
+//		return filePath;
+//
+//	}
+
+	int Deck::ScoreP() {
+		int scoreP=0;
+		for (int i = 0;i < Player.size();i++)
+		{
+
+			if (Player[i].getSymbol() == "J" || Player[i].getSymbol() == "Q" || Player[i].getSymbol() == "K" || Player[i].getSymbol() == "10")
+			{
+				scoreP = scoreP + 10;
+			}
+			else if (Player[i].getSymbol() == "A") {
+				if (scoreP + 11 > 21)
+				{
+					scoreP = scoreP + 1;
+				}
+				else
+				{
+					scoreP = scoreP + 11;
+				}
+			}
+			else {
+				scoreP = scoreP + stoi(Player[i].getSymbol());
+			}
+		}
+		return scoreP;
+	}
+
+	int Deck::ScoreD() {
+		int scoreD = 0;
+		for (int i = 0;i < Dealer.size();i++)
+		{
+
+			if (Dealer[i].getSymbol() == "J" || Dealer[i].getSymbol() == "Q" || Dealer[i].getSymbol() == "K" || Dealer[i].getSymbol() == "10")
+			{
+				scoreD = scoreD + 10;
+			}
+			else if (Dealer[i].getSymbol() == "A") {
+				if (scoreD + 11 > 21)
+				{
+					scoreD = scoreD + 1;
+				}
+				else
+				{
+					scoreD = scoreD + 11;
+				}
+			}
+			else {
+				scoreD = scoreD + stoi(Dealer[i].getSymbol());
+			}
+		}
+		return scoreD;
+	}
+
+
+
+
+
+
+
+
+
+
+#pragma once
+#include <string>
+#include <vector>
+#include "Card.h"
+
+using namespace std;
+
+class Deck {
+private:
+	vector<Card> deck;
+	vector<Card> Player;
+	vector<Card> Dealer;
+	int ct = 0;
+
+public:
+	Deck();  // Constructor declaration
+	void Shuffle();  // Function to shuffle the deck
+	void giveCardP();  // Function to give card to player
+	void giveCardD();  // Function to give card to dealer
+	vector<Card> PlayerHand();  // Function to get player's hand
+	vector<Card> DealerHand();  // Function to get dealer's hand
+	int ScoreP();  // Function to calculate player's score
+	int ScoreD();  // Function to calculate dealer's score
+};
+

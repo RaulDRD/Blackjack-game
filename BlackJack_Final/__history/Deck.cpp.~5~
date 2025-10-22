@@ -1,0 +1,211 @@
+#include "Deck.h"
+#include "Card.h"
+#include <vector>
+#include<iostream>
+#include<random>
+#include<algorithm>
+
+using namespace std;
+
+
+Deck::Deck() {
+	vector<string>suit = { "Hearts", "Diamonds", "Spades", "Clubs" };
+	vector<string>symbol = { "A","2","3","4","5","6","7","8","9","10","J","Q","K" };
+
+	for (int i = 0;i < suit.size();i++)
+	{
+		for (int j = 0;j < symbol.size();j++)
+		{
+			deck.push_back(Card(suit[i], symbol[j]));
+		}
+	}
+}
+
+void Deck::Generare(){
+	vector<string>suit = { "Hearts", "Diamonds", "Spades", "Clubs" };
+	vector<string>symbol = { "A","2","3","4","5","6","7","8","9","10","J","Q","K" };
+
+	for (int i = 0;i < suit.size();i++)
+	{
+		for (int j = 0;j < symbol.size();j++)
+		{
+			deck.push_back(Card(suit[i], symbol[j]));
+		}
+	}
+}
+
+
+void Deck::Shuffle()
+{
+	Player.clear();
+	Dealer.clear();
+	nrP=0;
+	nrD=0;
+	srand(time(NULL));
+	for (int i = 0; i < deck.size(); ++i) {
+
+		int j = rand() % deck.size();
+		swap(deck[i], deck[j]);
+
+	}
+	deck.clear();
+	nrAsiP=0;
+	nrAsiD=0;
+
+
+
+
+
+
+};
+
+/*void Deck::Afiseaza() {
+	for (int i = 0;i < deck.size();i++)
+	{
+		cout << deck[i].getSuit() << " of " << deck[i].getSymbol() <<i<<endl;
+	}
+
+}*/
+
+void Deck::giveCardP() {
+
+	Player.push_back(deck[ct]);
+	deck.pop_back();
+	ct++;
+	nrP++;
+}
+
+vector <Card> Deck::giveHandP() {
+
+	return Player;
+}
+
+void Deck::giveCardD() {
+
+	Dealer.push_back(deck[ct]);
+	deck.pop_back();
+
+	ct++;
+	nrD++;
+}
+
+vector <Card> Deck::giveHandD() {
+
+	return Dealer;
+}
+
+int Deck::NrCartiP(){
+
+	nrcartiP=nrP;
+	return nrcartiP;
+}
+
+int Deck::NrCartiD(){
+
+	nrcartiD=nrD;
+	return nrcartiD;
+}
+
+int Deck::ScoreP() {
+	int scoreP = 0;
+	for (int i = 0;i < Player.size();i++)
+	{
+
+		if (Player[i].getSymbol() == "J" || Player[i].getSymbol() == "Q" || Player[i].getSymbol() == "K" || Player[i].getSymbol() == "10")
+		{
+			scoreP = scoreP + 10;
+		}
+		else if (Player[i].getSymbol() == "A") {
+				scoreP = scoreP + 11;
+				nrAsiP++;
+//			if (scoreP + 11 > 21)
+//			{
+//				scoreP = scoreP + 1;
+//			}
+//			else
+//			{
+//				scoreP = scoreP + 11;
+//			}
+		}
+		else {
+			scoreP = scoreP + stoi(Player[i].getSymbol());
+		}
+		if(i==1 && scoreP==16 && nrAsiP!=0)
+		{
+			scoreP=scoreP-10;
+				nrAsiP--;
+        }
+		while(scoreP>21 && nrAsiP>0)
+		{
+			nrAsiP--;
+			scoreP = scoreP-10;
+		}
+	}
+	return scoreP;
+}
+
+int Deck::ScoreD() {
+	int scoreD = 0;
+	for (int i = 0;i < Dealer.size();i++)
+	{
+
+		if (Dealer[i].getSymbol() == "J" || Dealer[i].getSymbol() == "Q" || Dealer[i].getSymbol() == "K" || Dealer[i].getSymbol() == "10")
+		{
+			scoreD = scoreD + 10;
+		}
+		else if (Dealer[i].getSymbol() == "A") {
+			scoreD = scoreD + 11;
+				nrAsiD++;
+//			if (scoreD + 11 > 21)
+//			{
+//				scoreD = scoreD + 1;
+//			}
+//			else
+//			{
+//				scoreD = scoreD + 11;
+//			}
+		}
+		else {
+			scoreD = scoreD + stoi(Dealer[i].getSymbol());
+		}
+		while(scoreD>21 && nrAsiD>0)
+		{
+			nrAsiD--;
+			scoreD = scoreD-10;
+		}
+	}
+	return scoreD;
+
+	}
+
+	int Deck::Test()
+	{
+		return 3;
+	}
+
+	int Deck::ScoreD2(){
+	   int scoreD2 = 0;
+
+
+		if (Dealer[1].getSymbol() == "J" || Dealer[1].getSymbol() == "Q" || Dealer[1].getSymbol() == "K" || Dealer[1].getSymbol() == "10")
+		{
+			scoreD2 = scoreD2 + 10;
+		}
+		else if (Dealer[1].getSymbol() == "A") {
+			scoreD2 = scoreD2 + 11;
+				nrAsiD++;
+//			if (scoreD + 11 > 21)
+//			{
+//				scoreD = scoreD + 1;
+//			}
+//			else
+//			{
+//				scoreD = scoreD + 11;
+//			}
+		}
+		else {
+			scoreD2 = scoreD2 + stoi(Dealer[1].getSymbol());
+		}
+		return scoreD2;
+
+	}

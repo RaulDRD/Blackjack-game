@@ -1,0 +1,54 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Card.h"
+#include "Deck.h"
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+
+//---------------------------------------------------------------------------
+void __fastcall TForm1::PanelHitClick(TObject *Sender)
+{
+	Card card = deck.giveCardP(); // Assuming `deck` is an instance of your Deck class
+
+	// Determine the image for the card
+	String cardImagePath =  card.getSymbol() + "_of_" + card.getSuit() + ".png";
+
+	// Set the image on the UI
+	TImage *cardImage = new TImage(this);
+	cardImage->Parent = this; // Add the image to the form
+	cardImage->Picture->LoadFromFile(cardImagePath);
+	cardImage->Left = 100; // Adjust the position dynamically
+	cardImage->Top = 200;  // Adjust the position dynamically
+	cardImage->Width = 100;
+	cardImage->Height = 150;
+}
+
+
+void __fastcall TForm1::PanelStandClick(TObject *Sender)
+{
+	while(deck.ScoreD()<16){
+	 deck.giveCardD();
+	}
+
+
+}
+//---------------------------------------------------------------------------
+
+
+
+
+//---------------------------------------------------------------------------
+

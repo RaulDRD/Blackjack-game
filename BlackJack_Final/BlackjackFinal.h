@@ -1,0 +1,50 @@
+#ifndef BlackjackFinalH
+#define BlackjackFinalH
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <Vcl.ExtCtrls.hpp>
+#include "Deck.h"
+#include "Card.h"
+#include <Vcl.Imaging.jpeg.hpp>
+#include <Vcl.Imaging.pngimage.hpp>
+
+//---------------------------------------------------------------------------
+class TForm1 : public TForm
+{
+__published:
+	TImage *Background;
+	TImage *Dcarte1;
+	TImage *Dcarte2;
+	TImage *Dcarte3;
+	TImage *Dcarte4;
+	TImage *Dcarte5;
+	TImage *DcarteSpate;
+	TPanel *PanelHit;
+	TPanel *PanelReset;
+	TPanel *PanelStand;
+	TPanel *PanelStart;
+	TImage *Pcarte1;
+	TImage *Pcarte2;
+	TImage *Pcarte3;
+	TImage *Pcarte4;
+	TImage *Pcarte5;
+	TImage *Logo;
+	TPanel *DealerScore;
+	TPanel *PlayerScore;
+	void __fastcall PanelHitClick(TObject *Sender);
+	void __fastcall PanelStandClick(TObject *Sender);
+	void __fastcall PanelStartClick(TObject *Sender);
+	void __fastcall PanelResetClick(TObject *Sender);
+private:
+	Deck deck;
+public:
+	__fastcall TForm1(TComponent* Owner);
+	String filePath(Card card);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm1 *Form1;
+//---------------------------------------------------------------------------
+#endif
